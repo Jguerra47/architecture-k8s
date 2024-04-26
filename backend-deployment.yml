@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.33.0 (HEAD)
+  labels:
+    io.kompose.service: backend
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: backend
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.33.0 (HEAD)
+      labels:
+        io.kompose.network/auth-microservice-default: "true"
+        io.kompose.service: backend
+    spec:
+      containers:
+        - image: drew138/auth-microservice
+          name: backend
+          ports:
+            - name: http-server 
+              containerPort: 8000
+          env:
+            - name: DB_HOST
+              value: "db"
+      restartPolicy: Always

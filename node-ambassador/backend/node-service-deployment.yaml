@@ -30,13 +30,22 @@ spec:
             - name: DB_HOST
               value: db
             - name: STRIPE_SECRET
-              value: sk_test_51P4tXiIdhZFpJSS67BlVW5AeoxPK1b4aPZfht0SU3JNpJIJMwoO6JovJ3zr1khKekmHjxYrHSUV18qqD3JhUuDol00DstyH7X9
+              valueFrom:
+                secretKeyRef:
+                  name: node-credentials
+                  key: stripe_secret
             - name: CHECKOUT_URL
               value: http://localhost:5000/
             - name: BROKER_KAFKA
               value: pkc-12576z.us-west2.gcp.confluent.cloud:9092
             - name: USERNAME_KAFKA
-              value: RHJCYBSF3FMIKKJQ
+              valueFrom:
+                secretKeyRef:
+                  name: node-credentials
+                  key: kafka_username
             - name: PASSWORD_KAFKA
-              value: wBs6Af4l1xB47gOlllgwchFlnIU0LpVjpxC+AyeZyZwdIPx+Qvh3NWhY3eZ7+q0m
+              valueFrom:
+                secretKeyRef:
+                  name: node-credentials
+                  key: kafka_password
       restartPolicy: Always

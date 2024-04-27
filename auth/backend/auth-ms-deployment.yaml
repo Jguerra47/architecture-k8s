@@ -8,7 +8,6 @@ metadata:
     io.kompose.service: auth-ms
   name: auth-ms
 spec:
-  replicas: 1
   selector:
     matchLabels:
       io.kompose.service: auth-ms
@@ -22,7 +21,7 @@ spec:
         io.kompose.service: auth-ms
     spec:
       containers:
-        - image: drew138/auth-microservice
+        - image: drew138/auth-microservice:v1
           name: auth-ms
           ports:
             - name: http-server 
@@ -32,4 +31,11 @@ spec:
               value: db
             - name: SECRET_KEY
               value: secret
+          resources:
+            limits:
+              memory: "500Mi"   # Set the memory limit for the container
+              cpu: "400m"     # Set the CPU limit for the container (0.5 CPU cores)
+            requests:
+              memory: "300Mi" # Set the initial memory request for the container
+              cpu: "200m" 
       restartPolicy: Always

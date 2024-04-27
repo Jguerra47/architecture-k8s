@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.33.0 (HEAD)
+  labels:
+    io.kompose.service: email-ms
+  name: email-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: email-ms
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.33.0 (HEAD)
+      labels:
+        io.kompose.service: email-ms
+    spec:
+      containers:
+        - image: drew138/email-microservice:v1
+          name: email-ms
+          env:
+            - name: BROKER_KAFKA
+              valueFrom:
+                secretKeyRef:
+                  name: email-credentials
+                  key: BROKER_KAFKA
+            - name: USERNAME_KAFKA
+              valueFrom:
+                secretKeyRef:
+                  name: email-credentials
+                  key: USERNAME_KAFKA
+            - name: PASSWORD_KAFKA
+              valueFrom:
+                secretKeyRef:
+                  name: email-credentials
+                  key: PASSWORD_KAFKA
+            - name: HOST_MAIL
+              value: mailhog:1025
+            - name: POST_MAIL
+              value: "1025"
+          resources:
+            limits: # Set the memory limit for the container
+              cpu: "300m"
+            requests:
+              memory: "1000Mi" # Set the initial memory request for the container
+              cpu: "150m"
+      restartPolicy: Always

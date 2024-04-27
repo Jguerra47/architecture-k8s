@@ -21,7 +21,7 @@ spec:
         io.kompose.service: node-service
     spec:
       containers:
-        - image: drew138/architecture-node-ambassador:v1
+        - image: drew138/architecture-node-ambassador:v4
           name: node-service
           ports:
             - name: http-server 
@@ -48,4 +48,10 @@ spec:
                 secretKeyRef:
                   name: node-credentials
                   key: kafka_password
+          resources:
+            limits: # Set the memory limit for the container
+              cpu: "500m"     # Set the CPU limit for the container (0.5 CPU cores)
+            requests:
+              memory: "300Mi" # Set the initial memory request for the container
+              cpu: "200m"
       restartPolicy: Always

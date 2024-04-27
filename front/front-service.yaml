@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.33.0 (HEAD)
+  labels:
+    io.kompose.service: front-service
+  name: front-service
+spec:
+  ports:
+    - port: 3000
+      targetPort: http-server
+  selector:
+    io.kompose.service: front-service
+  type: LoadBalancer

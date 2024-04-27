@@ -5,38 +5,31 @@ metadata:
     kompose.cmd: kompose convert -f docker-compose.yaml
     kompose.version: 1.33.0 (HEAD)
   labels:
-    io.kompose.service: user-ms
-  name: user-ms
+    io.kompose.service: front-service
+  name: front-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: user-ms
+      io.kompose.service: front-service
   template:
     metadata:
       annotations:
         kompose.cmd: kompose convert -f docker-compose.yaml
         kompose.version: 1.33.0 (HEAD)
       labels:
-        io.kompose.service: user-ms
+        io.kompose.service: front-service
     spec:
       containers:
-        - image: drew138/user-microservice:v11
-          name: user-ms
+        - image: drew138/react-ambassador:v12
+          name: front-service
           ports:
             - name: http-server 
-              containerPort: 8000
-          env:
-            - name: DB_HOST
-              value: db
-            - name: AUTH_BASE_URL
-              value: auth-ms:8000
-            - name: NODE_AMBASSADOR_BASE_URL
-              value: node-service:8002
+              containerPort: 3000
           resources:
             limits: # Set the memory limit for the container
-              cpu: "300m"
+              cpu: "500m"     # Set the CPU limit for the container (0.5 CPU cores)
             requests:
-              memory: "1000Mi" # Set the initial memory request for the container
-              cpu: "150m"
+              memory: "500Mi" # Set the initial memory request for the container
+              cpu: "200m"
       restartPolicy: Always

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  labels:
+    app: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:latest
+        ports:
+        - containerPort: 6379
+        resources:
+          limits: # Set the memory limit for the container
+            cpu: "250m"     # Set the CPU limit for the container (0.5 CPU cores)
+          requests:
+            memory: "300Mi" # Set the initial memory request for the container
+            cpu: "50m"

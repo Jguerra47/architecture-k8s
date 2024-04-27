@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailhog-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailhog
+  template:
+    metadata:
+      labels:
+        app: mailhog
+    spec:
+      containers:
+      - name: mailhog
+        image: mailhog/mailhog
+        ports:
+        - containerPort: 1025  # SMTP port
+        - containerPort: 8025  # HTTP port (Web UI)
+
+        resources:
+          limits:
+            memory: "500Mi"   # Set the memory limit for the container
+            cpu: "400m"
+          requests:
+            memory: "300Mi" # Set the initial memory request for the container
+            cpu: "200m" 

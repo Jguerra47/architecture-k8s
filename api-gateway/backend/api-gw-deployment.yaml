@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.33.0 (HEAD)
+  labels:
+    io.kompose.service: api-gw
+  name: api-gw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: api-gw
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.33.0 (HEAD)
+      labels:
+        io.kompose.service: api-gw
+    spec:
+      containers:
+        - image: drew138/architecture-api-gateway-app:v3
+          name: api-gw
+          ports:
+            - name: http-server 
+              containerPort: 8000
+          env:
+            - name: DB_HOST
+              value: db
+            - name: SECRET_KEY
+              value: secret
+            - name: PORT
+              value: "8000"
+            - name: TIMEOUT
+              value: "10000"
+            - name: API_AUTH_ENDPOINT
+              value: auth-ms:8000
+            - name: API_USER_ENDPOINT
+              value: user-ms:8001
+            - name: API_ORDER_ENDPOINT
+              value: node-service:8002
+          resources:
+            limits:
+              memory: "500Mi"   # Set the memory limit for the container
+              cpu: "450m"     # Set the CPU limit for the container (0.5 CPU cores)
+            requests:
+              memory: "300Mi" # Set the initial memory request for the container
+              cpu: "200m" 
+      restartPolicy: Always

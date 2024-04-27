@@ -36,9 +36,9 @@ spec:
               protocol: TCP
           volumeMounts:
             - mountPath: /var/lib/mysql
-              name: db-claim0
+              name: db-claim-auth
       restartPolicy: Always
       volumes:
-        - name: db-claim0
+        - name: db-claim-auth
           persistentVolumeClaim:
-            claimName: db-claim0
+            claimName: db-claim-auth

@@ -5,12 +5,12 @@ metadata:
     kompose.cmd: kompose convert -f docker-compose.yaml
     kompose.version: 1.33.0 (HEAD)
   labels:
-    io.kompose.service: backend
-  name: backend
+    io.kompose.service: auth-ms
+  name: auth-ms
 spec:
   ports:
     - port: 8000
       targetPort: http-server
   selector:
-    io.kompose.service: backend
+    io.kompose.service: auth-ms
   type: LoadBalancer

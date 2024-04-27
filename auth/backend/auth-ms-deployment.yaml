@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml
+    kompose.version: 1.33.0 (HEAD)
+  labels:
+    io.kompose.service: auth-ms
+  name: auth-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: auth-ms
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml
+        kompose.version: 1.33.0 (HEAD)
+      labels:
+        io.kompose.network/auth-microservice-default: "true"
+        io.kompose.service: auth-ms
+    spec:
+      containers:
+        - image: drew138/auth-microservice
+          name: auth-ms
+          ports:
+            - name: http-server 
+              containerPort: 8000
+          env:
+            - name: DB_HOST
+              value: db
+      restartPolicy: Always
